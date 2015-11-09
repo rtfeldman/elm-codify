@@ -25,17 +25,17 @@ aliases =
     Dict.empty
 
 
-decodeRecordTypeHelp
+decodeRecordTypeReducer
     :  (String, Type)
     -> Result String (List ( String, Type ))
     -> Result String (List ( String, Type ))
-decodeRecordTypeHelp pair result =
-    Result.map (\list -> pair :: list) result
+decodeRecordTypeReducer pair result =
+    Result.map ((::) pair) result
 
 
 decodeRecordTypePairs : Decoder Type -> List (String, Type) -> Result String Type
 decodeRecordTypePairs decodeType pairs =
-    List.foldl decodeRecordTypeHelp (Ok []) pairs
+    List.foldl decodeRecordTypeReducer (Ok []) pairs
         |> Result.map Dict.fromList
         |> Result.map RecordType
 
