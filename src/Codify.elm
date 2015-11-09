@@ -16,23 +16,72 @@ type Type
 decodeType : Decoder Type
 decodeType =
     oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeB) -- should be able to just recursively "decodeType" here
+        , map (RecordType "") (dict decodeTypeB)
+        ]
+
+-- HACK to work around some recursive decoder bug
+decodeTypeB : Decoder Type
+decodeTypeB =
+    oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeC)
+        , map (RecordType "") (dict decodeTypeC)
+        ]
+
+-- HACK to work around some recursive decoder bug
+decodeTypeC : Decoder Type
+decodeTypeC =
+    oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeD)
+        , map (RecordType "") (dict decodeTypeD)
+        ]
+
+-- HACK to work around some recursive decoder bug
+decodeTypeD : Decoder Type
+decodeTypeD =
+    oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeE)
+        , map (RecordType "") (dict decodeTypeE)
+        ]
+
+-- HACK to work around some recursive decoder bug
+decodeTypeE : Decoder Type
+decodeTypeE =
+    oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeF)
+        , map (RecordType "") (dict decodeTypeF)
+        ]
+
+-- HACK to work around some recursive decoder bug
+decodeTypeF : Decoder Type
+decodeTypeF =
+    oneOf
+        [ decodePrimitive
+        , map ListType (list decodeTypeF)
+        , map (RecordType "") (dict decodeTypeF)
+        ]
+
+
+decodePrimitive : Decoder Type
+decodePrimitive =
+    oneOf
         [ map IntType int
         , map FloatType float
         , map StringType string
-        , map ListType (list decodeType)
-        , map (RecordType "") (dict decodeType)
         , null NullType
-        , succeed UndefinedType
         ]
 
 
 fromJson : String -> Result String Type
 fromJson json =
-    json
-        |> decodeString decodeType
+    decodeString decodeType json
 
 
 fromValue : Value -> Result String Type
 fromValue value =
-    value
-        |> decodeValue decodeType
+    decodeValue decodeType value
