@@ -7,6 +7,7 @@ import Result exposing (Result)
 type Type
     = IntType
     | FloatType
+    | BoolType
     | StringType
     | ListType Type
     | MaybeType Type

@@ -76,6 +76,9 @@ typeToString needsParens typeValue =
                 FloatType ->
                     ( False, "Float" )
 
+                BoolType ->
+                    ( False, "Bool" )
+
                 StringType ->
                     ( False, "String" )
 
