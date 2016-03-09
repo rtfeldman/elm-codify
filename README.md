@@ -1,2 +1,1 @@
-# elm-codify
-A tool to generate Elm decoders, encoders, and type aliases from JSON.
+DEPRECATED. Use [json-to-elm](https://github.com/eeue56/json-to-elm) instead!
